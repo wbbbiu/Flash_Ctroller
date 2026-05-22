@@ -15,7 +15,9 @@ typedef enum{
  }PWM_Errno_t;
  typedef enum{
     WDATA_LEN_LARGE,
-    SECTOR_INDEX_LARGE
+    SECTOR_INDEX_LARGE,
+    FLASH_CONFUSION,
+    FLASH_HEADER_ERR,
  }Flash_Errno_t;
  typedef enum{
    ADC_TIME_OUT//ADC获取超时

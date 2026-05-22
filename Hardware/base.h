@@ -44,4 +44,5 @@ void NVIC_Configuration(uint8_t channel,uint8_t sub,uint8_t pre);
 void GPIO_Out_Init(Gpio_Base *gpio,uint16_t mode);
 //配置GPIO复用输出,af复用功能
 void GPIO_AFOut_Init(Gpio_Base *gpio,uint8_t af);
+void u16_merge_sort(uint16_t *a,int l,int r);
 #endif

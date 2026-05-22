@@ -96,5 +96,35 @@ void GPIO_AFOut_Init(Gpio_Base *gpio,uint8_t af){
   GPIO_Init(gpio->port,&INIT);
   GPIO_PinAFConfig(gpio->port,Get_Source(gpio->pin),af);
 }
-
+void u16_merge(uint16_t *a,int l,int middle,int r){
+	uint16_t *temp=(uint16_t*)malloc(sizeof(uint16_t)*((r-l)+2));
+	int i=l,j=middle+1,index=0;
+	while(i<=middle&&j<=r){
+		if(a[i]<a[j]){
+			temp[index++]=a[i++];
+		}else{
+			temp[index++]=a[j++];
+		}
+	}
+	while(i<=middle){
+		temp[index++]=a[i++];
+	}
+	while(j<=r){
+		 temp[index++]=a[j++];
+	}
+	for(int i=0;i<index;i++){
+		a[l+i]=temp[i];
+	}
+	free(temp);
+	temp=NULL;
+}
+void u16_merge_sort(uint16_t *a,int l,int r){
+	if(l>=r){
+		return ;
+	}
+	int middle=(r-l)/2+l;
+	u16_merge_sort(a,l,middle);
+	u16_merge_sort(a,middle+1,r);
+	u16_merge(a,l,middle,r);
+}
    

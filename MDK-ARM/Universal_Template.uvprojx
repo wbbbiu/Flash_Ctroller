@@ -510,21 +510,6 @@
           <GroupName>Hardware</GroupName>
           <Files>
             <File>
-              <FileName>OLED.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Hardware\OLED.c</FilePath>
-            </File>
-            <File>
-              <FileName>OLED.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Hardware\OLED.h</FilePath>
-            </File>
-            <File>
-              <FileName>OLED_Font.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Hardware\OLED_Font.h</FilePath>
-            </File>
-            <File>
               <FileName>FONT.H</FileName>
               <FileType>5</FileType>
               <FilePath>..\Hardware\FONT.H</FilePath>
@@ -558,46 +543,6 @@
               <FileName>base.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\Hardware\base.h</FilePath>
-            </File>
-            <File>
-              <FileName>adc_base.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Hardware\adc_base.c</FilePath>
-            </File>
-            <File>
-              <FileName>adc_base.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Hardware\adc_base.h</FilePath>
-            </File>
-            <File>
-              <FileName>adc_pwm_core.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Hardware\adc_pwm_core.c</FilePath>
-            </File>
-            <File>
-              <FileName>adc_pwm_core.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Hardware\adc_pwm_core.h</FilePath>
-            </File>
-            <File>
-              <FileName>adc_pwm_module.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Hardware\adc_pwm_module.c</FilePath>
-            </File>
-            <File>
-              <FileName>adc_pwm_module.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Hardware\adc_pwm_module.h</FilePath>
-            </File>
-            <File>
-              <FileName>pwm_base.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Hardware\pwm_base.c</FilePath>
-            </File>
-            <File>
-              <FileName>pwm_base.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\Hardware\pwm_base.h</FilePath>
             </File>
             <File>
               <FileName>SelfError.c</FileName>

@@ -16,4 +16,7 @@
   ..\Library\stm32f4xx_cryp.h ..\Library\stm32f4xx_hash.h \
   ..\Library\stm32f4xx_rng.h ..\Library\stm32f4xx_can.h \
   ..\Library\stm32f4xx_dac.h ..\Library\stm32f4xx_dcmi.h \
-  ..\Library\stm32f4xx_fsmc.h ..\Hardware\SelfError.h
+  ..\Library\stm32f4xx_fsmc.h ..\Hardware\SelfError.h \
+  ..\Hardware\Flash\flash_context.h ..\User\use.h ..\System\sys.h \
+  ..\System\stm32f4xx.h ..\System\delay.h ..\System\usart.h \
+  ..\Hardware\lcd.h

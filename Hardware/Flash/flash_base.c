@@ -1,24 +1,13 @@
 #include "flash_base.h"
-static inline void Write_Enable(Spi_Device *spi){
-    Spi_Cs_Low(spi);
-    Spi_RW(spi,WRITE_ENABLE);
-    Spi_Cs_Hight(spi);
-}
-static inline uint8_t ReadSR1(Spi_Device *spi){
-    Spi_Cs_Low(spi);
-    Spi_RW(spi,READ_R1);
-    uint8_t val=Spi_RW(spi,READ_MASK);
-    Spi_Cs_Hight(spi);
-    return val;
-}
 
-static inline void Write_Addr(Spi_Device *spi,uint32_t addr){
-    Spi_RW(spi,(addr>>16)&0xFF);
-    Spi_RW(spi,(addr>>8)&0xFF);
-    Spi_RW(spi,(addr)&0xFF);
-}
-static inline void WaitBusy(Spi_Device *spi){
-     while(ReadSR1(spi)&WAIT_BUYS_MASK);
+
+static inline void Flash_Write_S1(Spi_Device *spi, uint8_t value){
+    Flash_Write_Enable(spi);
+    Spi_Cs_Low(spi);
+    Spi_RW(spi, 0x01); 
+    Spi_RW(spi, value);
+    Spi_Cs_Hight(spi);
+    Flash_WaitBusy(spi);
 }
 static inline void erase_memory(Spi_Device *spi,Mem_Level level){
     switch (level)
@@ -69,13 +58,19 @@ void Flash_init(Spi_Device *device){
 }
 
 void Flash_Erase_Memory(Spi_Device *spi,uint32_t addr,Mem_Level level){
-    Write_Enable(spi);
+    if(level == ALL){
+        uint8_t sr = ReadSR1(spi);
+        if(sr & 0x1C){ // BP2, BP1, BP0 位有保护
+            Flash_Write_S1(spi, sr & ~0x1C); // 清除写保护
+        }
+    }
+    Flash_Write_Enable(spi);
     Spi_Cs_Low(spi);
     erase_memory(spi,level);
     if(level!=ALL)
-    Write_Addr(spi,addr);
+    Flash_Write_Addr(spi,addr);
     Spi_Cs_Hight(spi);
-    WaitBusy(spi);
+    Flash_WaitBusy(spi);
 }
 //进行一个扇区编写
 System_Error_t Flash_Write_Sector(Spi_Device *spi,uint32_t addr,uint8_t *data,uint32_t len){
@@ -90,23 +85,23 @@ System_Error_t Flash_Write_Sector(Spi_Device *spi,uint32_t addr,uint8_t *data,ui
    erase_memory(spi,SECTOR);//擦除扇区
     while(addr<=des_addr){//一直写到这个地址
         if(!in_page_writing){//第一只或者说00全0的页地址是新的需要使能,拉低从新开始
-            Write_Enable(spi);
+            Flash_Write_Enable(spi);
             Spi_Cs_Low(spi);
             Spi_RW(spi, WRITE_DATA);
-            Write_Addr(spi,addr);
+            Flash_Write_Addr(spi,addr);
             in_page_writing=1;
         }
         Spi_RW(spi,*data++);//写入数据
         if(((addr&0xFF)==0xFF)&&in_page_writing){//FF页内地址的最后一个这个写完就是新的页
             Spi_Cs_Hight(spi);//关闭
-            WaitBusy(spi);//等待
+            Flash_WaitBusy(spi);//等待
             in_page_writing=0;
         }
         addr++;
     }
     if(in_page_writing){//最后特判一下如果没有关闭就手动关闭
     Spi_Cs_Hight(spi);
-    WaitBusy(spi);
+    Flash_WaitBusy(spi);
     }
    return error;
 }
@@ -114,7 +109,7 @@ System_Error_t Flash_ReadData(Spi_Device *spi,uint32_t addr,uint8_t *data,uint32
     System_Error_t error={.all=0};
     Spi_Cs_Low(spi);
     Spi_RW(spi,READ_DATA);
-    Write_Addr(spi,addr);
+    Flash_Write_Addr(spi,addr);
     for(int i=0;i<(int)len;i++){
         data[i]=Spi_RW(spi,READ_MASK);
     }

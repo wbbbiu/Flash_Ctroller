@@ -24,4 +24,26 @@ void Flash_init(Spi_Device *device);
 System_Error_t Flash_ReadData(Spi_Device *spi,uint32_t addr,uint8_t *data,uint32_t len);
 System_Error_t Flash_Write_Sector(Spi_Device *spi,uint32_t addr,uint8_t *data,uint32_t len);
 void Flash_Erase_Memory(Spi_Device *spi,uint32_t addr,Mem_Level level);
+static inline void Flash_Write_Addr(Spi_Device *spi,uint32_t addr){
+   Spi_RW(spi,(addr>>16)&0xFF);
+   Spi_RW(spi,(addr>>8)&0xFF);
+   Spi_RW(spi,(addr)&0xFF);
+}
+static inline uint8_t ReadSR1(Spi_Device *spi){
+   Spi_Cs_Low(spi);
+   Spi_RW(spi,READ_R1);
+   uint8_t val=Spi_RW(spi,READ_MASK);
+   Spi_Cs_Hight(spi);
+   return val;
+}
+static inline void Flash_WaitBusy(Spi_Device *spi){
+    while(ReadSR1(spi)&WAIT_BUYS_MASK);
+}
+static inline void Flash_Write_Enable(Spi_Device *spi){
+   Spi_Cs_Low(spi);
+   Spi_RW(spi,WRITE_ENABLE);
+   Spi_Cs_Hight(spi);
+}
+
+
 #endif
